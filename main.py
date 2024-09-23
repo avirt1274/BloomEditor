@@ -72,17 +72,32 @@ def save_file(event=None):
     return event
 
 
-def check_code_on_errors(event=None):
+# def check_code_on_errors(event=None):
+#     try:
+#         answer = request_gpt('Find errors, mistake and return repaired code (without text and only code): ' + editArea.get('1.0', 'end'), 'gpt-3.5-turbo')
+#         # answer = request_gpt('Find errors, mistake and return repaired code (without text only code): ' + editArea.get('1.0', 'end'), 'gpt-3.5-turbo')
+#     except Exception as e:
+#         push('Bloom Editor', f"Error checking code: {e}")
+#         return event
+#     else:
+#         pyperclip.copy(answer)
+#         push('Bloom Editor', f"Repaired code saved to clipboard!")
+#         return event
+
+def check_code_on_errors_sync():
     try:
         answer = request_gpt('Find errors, mistake and return repaired code (without text and only code): ' + editArea.get('1.0', 'end'), 'gpt-3.5-turbo')
+        time.sleep(5)
+        editArea.insert('end', f'\n\n\n{answer}')
         # answer = request_gpt('Find errors, mistake and return repaired code (without text only code): ' + editArea.get('1.0', 'end'), 'gpt-3.5-turbo')
     except Exception as e:
-        push('Bloom Editor', f"Error checking code: {e}")
-        return event
+        threading.Thread(target=push, args=('Bloom Editor', f"Error: {e}")).start()
     else:
-        pyperclip.copy(answer)
-        push('Bloom Editor', f"Repaired code saved to clipboard!")
-        return event
+        threading.Thread(target=push, args=('Bloom Editor', f"The corrected code is at the very bottom of the code")).start()
+
+def check_code_on_errors(event=None):
+    threading.Thread(target=check_code_on_errors_sync).start()
+    return event
 
 def copy(event=None):
     # The argument to 'args' must be a tuple, so the comma ensures it's treated as such
