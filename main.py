@@ -17,11 +17,8 @@ y = 0
 
 def copyright():
     '''Bloom Editor Copyright'''
-    print('https://github.com/your-github-username/bloom-editor')
-    print('Free licence for all!')
-    print('Logs')
-
-    pass
+    print('Bloom-Editor: https://github.com/avirt1274/BloomEditor/tree/main')
+    print('\nLogs:')
 
 def execute(event=None):
     with open(output_file, 'w', encoding='UTF-8') as f:
@@ -87,13 +84,6 @@ def check_code_on_errors(event=None):
         push('Bloom Editor', f"Repaired code saved to clipboard!")
         return event
 
-# def copy_code(event=None):
-#     # editArea.get('insert', 'end')
-#     pyperclip.copy(editArea.selection_get())
-
-# def paste_code(event=None):
-#     editArea.insert('insert', pyperclip.paste())
-
 def copy(event=None):
     # The argument to 'args' must be a tuple, so the comma ensures it's treated as such
     threading.Thread(target=pyperclip.copy, args=(editArea.selection_get(),)).start()
@@ -101,7 +91,7 @@ def copy(event=None):
 
 def paste(event=None):
     threading.Thread(target=editArea.insert, args=('insert', pyperclip.paste())).start()
-    changes()
+    changes(None)
     return event
 
 def popup(event=None):
@@ -153,8 +143,11 @@ if platform.system() == "Windows":
 
 
 root = tkinter.Tk()
+# root.geometry('1000x450')
 root.geometry('700x500')
 root.title('Bloom Editor')
+# Set the icon of the window
+root.iconbitmap("assets/icon.ico")
 previousText = ''
 
 normal = rgb((234, 234, 234))
@@ -164,7 +157,6 @@ string = rgb((234, 162, 95))
 function = rgb((95, 211, 234))
 background = rgb((42, 42, 42))
 font = 'Consolas 15'
-
 
 repl = [
     ['(^| )(False|True|None|and|as|assert|await|async|break|class|continue|def|del|elif|else|except|finally|for|from|global|if|import|in|is|lambda|nonlocal|not|or|pass|raise|return|try|while|with|yield)($| )', keywords],
@@ -184,7 +176,8 @@ file_path = tkinter.Entry(
 )
 
 editArea.pack(fill='both', expand=1)
-# editArea.pack(fill='top', expand=1)
+# editArea.pack(anchor='e', fill='y', expand=1)
+# file_path.pack(anchor='w', pady=10, fill='y', expand=1)
 
 editArea.bind('<KeyRelease>', changes)
 editArea.bind('<KeyPress>', insert_closing)  # Use <KeyPress> instead of <Key>
@@ -238,6 +231,10 @@ def auto_save(event=None):
 if enable_auto_save:
     root.after(auto_save_delay * 1000, auto_save)
 
+
+
 changes()
+
+copyright()
 
 root.mainloop()

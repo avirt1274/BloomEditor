@@ -6,26 +6,33 @@ import pygame
 
 # Инициализация pygame mixer
 pygame.mixer.init()
+pygame.mixer.music.set_volume(1)
 
 # Папка с аудиофайлами
-assets = 'assets/'
+assets = 'assets/music/'
 
-# Список файлов только с определенными расширениями
-files = [f for f in listdir(assets) if f.endswith(('.mp3', '.wav'))]
+def play():
+    # Список файлов только с определенными расширениями
+    files = [f for f in listdir(assets) if f.endswith(('.mp3', '.wav'))]
 
-# Проверка наличия файлов
-if not files:
-    # print("No audio files found!")
-    pass
-else:
-    # print("Available files:", files)
+    # Проверка наличия файлов
+    if not files:
+        # print("No audio files found!")
+        pass
+    else:
+        # print("Available files:", files)
 
-    # Выбор случайного файла и его воспроизведение
-    audio_file = choice(files)
-    # print(f"Playing: {audio_file}")
-    pygame.mixer.music.load(assets + audio_file)
-    pygame.mixer.music.play()
+        # Выбор случайного файла и его воспроизведение
+        audio_file = choice(files)
+        # print(f"Playing: {audio_file}")
+        pygame.mixer.music.load(assets + audio_file)
+        pygame.mixer.music.play()
 
-    # Ожидание завершения воспроизведения
-    while pygame.mixer.music.get_busy():
-        sleep(1)  # Проверка каждую секунду
+        # Ожидание завершения воспроизведения
+        while pygame.mixer.music.get_busy():
+            sleep(1)  # Проверка каждую секунду
+
+        play()
+
+
+play()
