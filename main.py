@@ -4,16 +4,16 @@ from push import push
 import platform
 import pyperclip
 
-# Настройки
-output_file = 'assets/run.py'
+# Settings
+output_file = 'assets/run.py' # Default Path to file where it saves
 enable_auto_save = True
-auto_save_delay = 60
+auto_save_delay = 60 # in seconds
 
-# Не трогать
+# Don't touch
 x = 0
 y = 0
 
-# код (чуствителен к раскладке клавиатуры)
+# code (key layout sensitivity)
 
 def copyright():
     '''Bloom Editor Copyright'''
@@ -61,7 +61,7 @@ def save_file(event=None):
             f.write(text_content)
         print("Text successfully saved to file.")
 
-        # Выполняем push в отдельном потоке
+        # start push in other thread
         threading.Thread(target=push, args=('Bloom Editor', f'Code saved in {output_file}')).start()
         print("Notification sent in separate thread.")
 
@@ -150,7 +150,8 @@ root.title('Bloom Editor')
 root.iconbitmap("assets/icon.ico")
 previousText = ''
 
-normal = rgb((234, 234, 234))
+# Colors
+normal = rgb((234, 234, 234)) # used for background
 keywords = rgb((95, 234, 165))
 comments = rgb((234, 95, 95))
 string = rgb((234, 162, 95))
